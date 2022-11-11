@@ -1,96 +1,168 @@
-/*
-	Twenty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+(function ($) {
+    "use strict";
 
-(function($) {
+    $(document).ready(function($){
+        
+        // testimonial sliders
+        $(".testimonial-sliders").owlCarousel({
+            items: 1,
+            loop: true,
+            autoplay: true,
+            responsive:{
+                0:{
+                    items:1,
+                    nav:false
+                },
+                600:{
+                    items:1,
+                    nav:false
+                },
+                1000:{
+                    items:1,
+                    nav:false,
+                    loop:true
+                }
+            }
+        });
 
-	var	$window = $(window),
-		$body = $('body'),
-		$header = $('#header'),
-		$banner = $('#banner');
+        // homepage slider
+        $(".homepage-slider").owlCarousel({
+            items: 1,
+            loop: true,
+            autoplay: true,
+            nav: true,
+            dots: false,
+            navText: ['<i class="fas fa-angle-left"></i>', '<i class="fas fa-angle-right"></i>'],
+            responsive:{
+                0:{
+                    items:1,
+                    nav:false,
+                    loop:true
+                },
+                600:{
+                    items:1,
+                    nav:true,
+                    loop:true
+                },
+                1000:{
+                    items:1,
+                    nav:true,
+                    loop:true
+                }
+            }
+        });
 
-	// Breakpoints.
-		breakpoints({
-			wide:      [ '1281px',  '1680px' ],
-			normal:    [ '981px',   '1280px' ],
-			narrow:    [ '841px',   '980px'  ],
-			narrower:  [ '737px',   '840px'  ],
-			mobile:    [ null,      '736px'  ]
-		});
+        // logo carousel
+        $(".logo-carousel-inner").owlCarousel({
+            items: 4,
+            loop: true,
+            autoplay: true,
+            margin: 30,
+            responsive:{
+                0:{
+                    items:1,
+                    nav:false
+                },
+                600:{
+                    items:3,
+                    nav:false
+                },
+                1000:{
+                    items:4,
+                    nav:false,
+                    loop:true
+                }
+            }
+        });
 
-	// Play initial animations on page load.
-		$window.on('load', function() {
-			window.setTimeout(function() {
-				$body.removeClass('is-preload');
-			}, 100);
-		});
+        // count down
+        if($('.time-countdown').length){  
+            $('.time-countdown').each(function() {
+            var $this = $(this), finalDate = $(this).data('countdown');
+            $this.countdown(finalDate, function(event) {
+                var $this = $(this).html(event.strftime('' + '<div class="counter-column"><div class="inner"><span class="count">%D</span>Days</div></div> ' + '<div class="counter-column"><div class="inner"><span class="count">%H</span>Hours</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%M</span>Mins</div></div>  ' + '<div class="counter-column"><div class="inner"><span class="count">%S</span>Secs</div></div>'));
+            });
+         });
+        }
 
-	// Scrolly.
-		$('.scrolly').scrolly({
-			speed: 1000,
-			offset: function() { return $header.height() + 10; }
-		});
+        // projects filters isotop
+        $(".product-filters li").on('click', function () {
+            
+            $(".product-filters li").removeClass("active");
+            $(this).addClass("active");
 
-	// Dropdowns.
-		$('#nav > ul').dropotron({
-			mode: 'fade',
-			noOpenerFade: true,
-			expandMode: (browser.mobile ? 'click' : 'hover')
-		});
+            var selector = $(this).attr('data-filter');
 
-	// Nav Panel.
+            $(".product-lists").isotope({
+                filter: selector,
+            });
+            
+        });
+        
+        // isotop inner
+        $(".product-lists").isotope();
 
-		// Button.
-			$(
-				'<div id="navButton">' +
-					'<a href="#navPanel" class="toggle"></a>' +
-				'</div>'
-			)
-				.appendTo($body);
+        // magnific popup
+        $('.popup-youtube').magnificPopup({
+            disableOn: 700,
+            type: 'iframe',
+            mainClass: 'mfp-fade',
+            removalDelay: 160,
+            preloader: false,
+            fixedContentPos: false
+        });
 
-		// Panel.
-			$(
-				'<div id="navPanel">' +
-					'<nav>' +
-						$('#nav').navList() +
-					'</nav>' +
-				'</div>'
-			)
-				.appendTo($body)
-				.panel({
-					delay: 500,
-					hideOnClick: true,
-					hideOnSwipe: true,
-					resetScroll: true,
-					resetForms: true,
-					side: 'left',
-					target: $body,
-					visibleClass: 'navPanel-visible'
-				});
+        // light box
+        $('.image-popup-vertical-fit').magnificPopup({
+            type: 'image',
+            closeOnContentClick: true,
+            mainClass: 'mfp-img-mobile',
+            image: {
+                verticalFit: true
+            }
+        });
 
-		// Fix: Remove navPanel transitions on WP<10 (poor/buggy performance).
-			if (browser.os == 'wp' && browser.osVersion < 10)
-				$('#navButton, #navPanel, #page-wrapper')
-					.css('transition', 'none');
+        // homepage slides animations
+        $(".homepage-slider").on("translate.owl.carousel", function(){
+            $(".hero-text-tablecell .subtitle").removeClass("animated fadeInUp").css({'opacity': '0'});
+            $(".hero-text-tablecell h1").removeClass("animated fadeInUp").css({'opacity': '0', 'animation-delay' : '0.3s'});
+            $(".hero-btns").removeClass("animated fadeInUp").css({'opacity': '0', 'animation-delay' : '0.5s'});
+        });
 
-	// Header.
-		if (!browser.mobile
-		&&	$header.hasClass('alt')
-		&&	$banner.length > 0) {
+        $(".homepage-slider").on("translated.owl.carousel", function(){
+            $(".hero-text-tablecell .subtitle").addClass("animated fadeInUp").css({'opacity': '0'});
+            $(".hero-text-tablecell h1").addClass("animated fadeInUp").css({'opacity': '0', 'animation-delay' : '0.3s'});
+            $(".hero-btns").addClass("animated fadeInUp").css({'opacity': '0', 'animation-delay' : '0.5s'});
+        });
 
-			$window.on('load', function() {
+       
 
-				$banner.scrollex({
-					bottom:		$header.outerHeight(),
-					terminate:	function() { $header.removeClass('alt'); },
-					enter:		function() { $header.addClass('alt reveal'); },
-					leave:		function() { $header.removeClass('alt'); }
-				});
+        // stikcy js
+        $("#sticker").sticky({
+            topSpacing: 0
+        });
 
-			});
+        //mean menu
+        $('.main-menu').meanmenu({
+            meanMenuContainer: '.mobile-menu',
+            meanScreenWidth: "992"
+        });
+        
+         // search form
+        $(".search-bar-icon").on("click", function(){
+            $(".search-area").addClass("search-active");
+        });
 
-		}
+        $(".close-btn").on("click", function() {
+            $(".search-area").removeClass("search-active");
+        });
+    
+    });
 
-})(jQuery);
+
+    jQuery(window).on("load",function(){
+        jQuery(".loader").fadeOut(1000);
+    });
+
+
+}(jQuery));
